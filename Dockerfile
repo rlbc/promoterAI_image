@@ -8,12 +8,12 @@ USER root
 
 ## -- ADD YOUR CODE HERE !! -- ##
 RUN apt-get update && \
-    apt-get install -y openmpi-bin libopenmpi-dev
+    apt-get install -y openmpi-bin libopenmpi-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN conda create -n tensorflow-gpu  python=3.11.5 -y && \
-    conda init && \
-    /opt/conda/bin/conda shell.bash activate tensorflow-gpu  && \
-    /opt/conda/envs/tensorflow-gpu/bin/pip install \
+RUN conda create -n tensorflow-gpu python=3.11.5 -y && \
+    /opt/conda/envs/tensorflow-gpu/bin/python -m pip install --upgrade pip && \
+    /opt/conda/envs/tensorflow-gpu/bin/pip install --no-cache-dir \
     absl-py==2.1.0 \
     astunparse==1.6.3 \
     flatbuffers==24.3.25 \
@@ -53,11 +53,8 @@ RUN conda create -n tensorflow-gpu  python=3.11.5 -y && \
     werkzeug==3.1.3 \
     wrapt==1.17.0 \
     ipykernel scikit-learn \
-    matplotlib pandas seaborn  && \
+    matplotlib pandas seaborn && \
     /opt/conda/envs/tensorflow-gpu/bin/python -m ipykernel install --name tensorflow-gpu --display-name "tensorflow-gpu"
-
-RUN echo "/opt/conda/bin/conda init > /dev/null " >> /etc/profile.d/conda.sh && \
-    echo "exec /bin/bash" >> /etc/profile
 ## --------------------------- ##
 
 # DO NOT EDIT USER VALUE
